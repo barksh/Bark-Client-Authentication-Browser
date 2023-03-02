@@ -1,0 +1,43 @@
+{
+  "name": "@barksh/client-authentication-browser",
+  "version": "1.0.0",
+  "description": "Authentication Browser Client Library ",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarkSH/Bark-Client-Authentication-Browser.git"
+  },
+  "author": "WMXPY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BarkSH/Bark-Client-Authentication-Browser/issues"
+  },
+  "homepage": "https://github.com/BarkSH/Bark-Client-Authentication-Browser#readme",
+  "peerDependencies": {
+    "@barksh/authentication-types": "*"
+  },
+  "dependencies": {
+    "@sudoo/magic": "^1.9.0",
+    "connor": "^2.8.0"
+  },
+  "devDependencies": {
+    "@barksh/authentication-types": "^1.0.0",
+    "@sudoo/triforce": "^3.10.1",
+    "global-jsdom": "^8.7.0",
+    "jsdom": "^21.1.0"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "instrument": true,
+    "reporter": [
+      "json",
+      "text-summary"
+    ],
+    "report-dir": "coverage",
+    "sourceMap": true
+  }
+}
