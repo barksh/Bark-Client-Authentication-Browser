@@ -5,9 +5,8 @@
  */
 
 import { InquiryAction } from "@barksh/authentication-types";
-import { getAuthenticationModuleV1WithDNSProxy } from "../../proxy/dns/authentication-module";
-import { getAuthenticationUIV1WithDNSProxy } from "../../proxy/dns/authentication-ui";
 import { postInquiryV1Proxy } from "../../proxy/v1/post-inquiry";
+import { fixTargetAuthenticationModuleHost, fixTargetAuthenticationUIHost } from "../../util/fix-host";
 
 export type RequestBarkInquiryV1Config = {
 
@@ -25,37 +24,13 @@ export type RequestBarkInquiryV1Response = {
     readonly redirectUrl: string;
 };
 
-const findTargetHost = async (target: string, config: RequestBarkInquiryV1Config): Promise<string> => {
-
-    if (config.overrideTargetHost) {
-        return config.overrideTargetHost;
-    }
-
-    const targetAuthenticationModuleHost: string =
-        await getAuthenticationModuleV1WithDNSProxy(target);
-
-    return `https://${targetAuthenticationModuleHost}`;
-};
-
-const findTargetUIHost = async (target: string, config: RequestBarkInquiryV1Config): Promise<string> => {
-
-    if (config.overrideTargetUIHost) {
-        return config.overrideTargetUIHost;
-    }
-
-    const targetAuthenticationUIHost: string =
-        await getAuthenticationUIV1WithDNSProxy(target);
-
-    return `https://${targetAuthenticationUIHost}`;
-};
-
 export const requestBarkInquiryV1 = async (
     target: string,
     config: RequestBarkInquiryV1Config,
 ): Promise<RequestBarkInquiryV1Response> => {
 
-    const targetHost: string = await findTargetHost(target, config);
-    const targetUIHost: string = await findTargetUIHost(target, config);
+    const targetHost: string = await fixTargetAuthenticationModuleHost(target, config.overrideTargetHost);
+    const targetUIHost: string = await fixTargetAuthenticationUIHost(target, config.overrideTargetUIHost);
 
     const realizeResponse = await postInquiryV1Proxy(
         targetHost,
