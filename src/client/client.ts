@@ -4,15 +4,12 @@
  * @description Client
  */
 
-import { ERROR_CODE } from "../error/code";
-import { panic } from "../error/panic";
+import { BarkAuthenticationToken } from "@barksh/token-browser";
 import { BarkModelConfiguration } from "../model/configuration";
 import { BarkPopupWindowModel } from "../model/popup-window-model";
 import { BarkQueryRegisterer } from "../model/query-registerer";
 import { BarkStartUpRegisterer } from "../model/start-up-registerer";
 import { BarkStorageObject, IBarkStorageAgent } from "../storage/declare";
-import { JWTAuthenticationToken } from "../token/declare";
-import { parseAuthenticationToken } from "../token/parse";
 import { verifyFilledBarkStorageObject } from "../util/verify";
 import { BarkAuthenticationClientAction, BarkAuthenticationClientActionManager } from "./client-actions";
 
@@ -32,7 +29,7 @@ export class BarkAuthenticationClient {
         this._actionManager = BarkAuthenticationClientActionManager.create();
     }
 
-    public async getAuthenticationToken(): Promise<JWTAuthenticationToken | null> {
+    public async getAuthenticationToken(): Promise<BarkAuthenticationToken | null> {
 
         const storageObject: BarkStorageObject = await this._configuration.loadStorageObject();
         const verifyResult = verifyFilledBarkStorageObject(storageObject);
@@ -43,11 +40,7 @@ export class BarkAuthenticationClient {
 
         const rawAuthenticationToken: string = storageObject.authenticationToken;
 
-        const authenticationToken: JWTAuthenticationToken | null = parseAuthenticationToken(rawAuthenticationToken);
-
-        if (!authenticationToken) {
-            throw panic.code(ERROR_CODE.INVALID_AUTHENTICATION_TOKEN_1, rawAuthenticationToken);
-        }
+        const authenticationToken: BarkAuthenticationToken = BarkAuthenticationToken.fromTokenOrThrow(rawAuthenticationToken);
 
         return authenticationToken;
     }

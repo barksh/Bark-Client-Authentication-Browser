@@ -4,13 +4,13 @@
  * @description Cross Site Registerer
  */
 
+import { BarkRefreshToken } from "@barksh/token-browser";
 import { requestBarkRedeemV1, RequestBarkRedeemV1Response } from "../action/v1/redeem";
 import { requestBarkRefreshV1, RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { BarkAuthenticationClientActionManager } from "../client/client-actions";
 import { ERROR_CODE } from "../error/code";
 import { panic } from "../error/panic";
 import { BarkTempObject } from "../storage/declare";
-import { JWTRefreshToken } from "../token/declare";
 import { verifyFilledBarkTempObject } from "../util/verify";
 import { BarkModelConfiguration } from "./configuration";
 
@@ -89,19 +89,15 @@ export abstract class BarkCrossSiteRegisterer {
 
     protected async refreshAuthenticationToken(
         rawRefreshToken: string,
-        refreshToken: JWTRefreshToken,
+        refreshToken: BarkRefreshToken,
     ): Promise<RequestBarkRefreshV1Response> {
 
-        if (typeof refreshToken.header.iss !== 'string') {
-            throw panic.code(ERROR_CODE.INVALID_REFRESH_TOKEN_1, refreshToken.stringify());
-        }
-
         const refreshResult: RequestBarkRefreshV1Response = await requestBarkRefreshV1(
-            refreshToken.header.iss,
+            refreshToken.getTargetDomain(),
             {
                 refreshToken: rawRefreshToken,
                 overrideTargetHost: this.getOverrideModuleHost(
-                    refreshToken.header.iss,
+                    refreshToken.getTargetDomain(),
                 ),
             },
         );

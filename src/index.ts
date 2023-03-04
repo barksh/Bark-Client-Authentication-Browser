@@ -16,6 +16,4 @@ export * from "./model/start-up-registerer";
 export * from "./proxy/v1/post-inquiry";
 export * from "./proxy/v1/post-redeem";
 export * from "./proxy/v1/post-refresh";
-export * from "./token/declare";
-export * from "./token/parse";
 

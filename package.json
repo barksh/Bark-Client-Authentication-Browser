@@ -13,7 +13,8 @@
   },
   "homepage": "https://github.com/BarkSH/Bark-Client-Authentication-Browser#readme",
   "peerDependencies": {
-    "@barksh/authentication-types": "*"
+    "@barksh/authentication-types": "*",
+    "@barksh/token-browser": "*"
   },
   "dependencies": {
     "@sudoo/jwt-web": "^3.1.0",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@barksh/authentication-types": "^1.0.0",
+    "@barksh/token-browser": "^1.1.0",
     "@sudoo/triforce": "^3.10.1",
     "global-jsdom": "^8.7.0",
     "jsdom": "^21.1.0"

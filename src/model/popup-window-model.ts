@@ -5,12 +5,12 @@
  */
 
 import { InquiryActionType } from "@barksh/authentication-types";
+import { BarkAuthenticationToken } from "@barksh/token-browser";
 import { RequestBarkInquiryV1Response } from "../action/v1/inquiry";
 import { RequestBarkRedeemV1Response } from "../action/v1/redeem";
 import { RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { ERROR_CODE } from "../error/code";
 import { panic } from "../error/panic";
-import { JWTAuthenticationToken } from "../token/declare";
 import { sleepWithTimeOut } from "../util/sleep";
 import { BarkModelConfiguration } from "./configuration";
 import { BarkCrossSiteModel } from "./cross-site-model";
@@ -33,7 +33,7 @@ export class BarkPopupWindowModel extends BarkCrossSiteModel {
         this._hiddenKey = null;
     }
 
-    public async performInquiry(): Promise<JWTAuthenticationToken> {
+    public async performInquiry(): Promise<BarkAuthenticationToken> {
 
         this.prePerformCheck();
 

@@ -4,13 +4,10 @@
  * @description Start Up Registerer
  */
 
+import { BarkAuthenticationToken, BarkRefreshToken } from "@barksh/token-browser";
 import { requestBarkRefreshV1, RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { BarkAuthenticationClientActionManager } from "../client/client-actions";
-import { ERROR_CODE } from "../error/code";
-import { panic } from "../error/panic";
 import { BarkStorageObject } from "../storage/declare";
-import { JWTAuthenticationToken, JWTRefreshToken } from "../token/declare";
-import { parseAuthenticationToken, parseRefreshToken } from "../token/parse";
 import { verifyFilledBarkStorageObject } from "../util/verify";
 import { BarkModelConfiguration } from "./configuration";
 import { BarkCrossSiteRegisterer } from "./cross-site-registerer";
@@ -43,11 +40,7 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
             }
 
             const rawAuthenticationToken: string = storageObject.authenticationToken;
-            const authenticationToken: JWTAuthenticationToken | null = parseAuthenticationToken(rawAuthenticationToken);
-
-            if (!authenticationToken) {
-                throw panic.code(ERROR_CODE.INVALID_AUTHENTICATION_TOKEN_1, rawAuthenticationToken);
-            }
+            const authenticationToken: BarkAuthenticationToken = BarkAuthenticationToken.fromTokenOrThrow(rawAuthenticationToken);
 
             const tomorrowDate = new Date();
             tomorrowDate.setDate(tomorrowDate.getDate() + 1);
@@ -59,11 +52,7 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
             }
 
             const rawRefreshToken: string = storageObject.refreshToken;
-            const refreshToken: JWTRefreshToken | null = parseRefreshToken(rawRefreshToken);
-
-            if (!refreshToken) {
-                throw panic.code(ERROR_CODE.INVALID_REFRESH_TOKEN_1, rawRefreshToken);
-            }
+            const refreshToken: BarkRefreshToken = BarkRefreshToken.fromTokenOrThrow(rawRefreshToken);
 
             const validRefreshToken: boolean = refreshToken.verifyExpiration();
 
@@ -72,9 +61,12 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
                 return;
             }
 
-            const refreshResponse: RequestBarkRefreshV1Response = await requestBarkRefreshV1(refreshToken.header.iss, {
-                refreshToken: rawRefreshToken,
-            });
+            const refreshResponse: RequestBarkRefreshV1Response = await requestBarkRefreshV1(
+                refreshToken.getTargetDomain(),
+                {
+                    refreshToken: rawRefreshToken,
+                },
+            );
 
             await this._configuration.persistStorageObject({
                 refreshToken: rawRefreshToken,

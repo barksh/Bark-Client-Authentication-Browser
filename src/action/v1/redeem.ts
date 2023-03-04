@@ -4,11 +4,8 @@
  * @description Redeem
  */
 
-import { JWTToken } from "@sudoo/jwt-web";
-import { ERROR_CODE } from "../../error/code";
-import { panic } from "../../error/panic";
+import { BarkRefreshToken } from "@barksh/token-browser";
 import { postRedeemV1Proxy } from "../../proxy/v1/post-redeem";
-import { JWTRefreshToken } from "../../token/declare";
 import { fixTargetAuthenticationModuleHost } from "../../util/fix-host";
 
 export type RequestBarkRedeemV1Config = {
@@ -21,7 +18,7 @@ export type RequestBarkRedeemV1Config = {
 export type RequestBarkRedeemV1Response = {
 
     readonly rawRefreshToken: string;
-    readonly refreshToken: JWTRefreshToken;
+    readonly refreshToken: BarkRefreshToken;
 };
 
 export const requestBarkRedeemV1 = async (
@@ -38,15 +35,7 @@ export const requestBarkRedeemV1 = async (
         },
     );
 
-    const token: JWTRefreshToken | null =
-        JWTToken.fromTokenOrNull(redeemResponse.refreshToken);
-
-    if (!token) {
-        throw panic.code(
-            ERROR_CODE.INVALID_REFRESH_TOKEN_1,
-            redeemResponse.refreshToken,
-        );
-    }
+    const token: BarkRefreshToken = BarkRefreshToken.fromTokenOrThrow(redeemResponse.refreshToken);
 
     return {
         rawRefreshToken: redeemResponse.refreshToken,
