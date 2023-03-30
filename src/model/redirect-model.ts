@@ -37,7 +37,7 @@ export class BarkRedirectModel extends BarkCrossSiteModel {
 
         this.prePerformCheck();
 
-        const callbackUrl: string = `${window.location.origin}?${this._queryKey}={exposure-key}`
+        const callbackUrl: string = `${window.location.origin}?${this._queryKey}={exposure-key}`;
         this.addAction({
             type: InquiryActionType.CALLBACK,
             payload: callbackUrl,
