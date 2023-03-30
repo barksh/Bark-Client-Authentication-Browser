@@ -7,6 +7,7 @@
 import { BarkAuthenticationToken } from "@barksh/token-browser";
 import { BarkModelConfiguration } from "../model/configuration";
 import { BarkPopupWindowModel } from "../model/popup-window-model";
+import { BarkRedirectModel } from "../model/redirect-model";
 import { BarkQueryRegisterer } from "../registerer/query-registerer";
 import { BarkStartUpRegisterer } from "../registerer/start-up-registerer";
 import { BarkStorageObject, IBarkStorageAgent } from "../storage/declare";
@@ -69,6 +70,15 @@ export class BarkAuthenticationClient {
     public createPopupWindowModel(targetDomain: string): BarkPopupWindowModel {
 
         return BarkPopupWindowModel.fromConfiguration(
+            targetDomain,
+            this._configuration,
+        );
+    }
+
+    public createRedirectModel(queryKey: string, targetDomain: string): BarkRedirectModel {
+
+        return BarkRedirectModel.fromConfiguration(
+            queryKey,
             targetDomain,
             this._configuration,
         );

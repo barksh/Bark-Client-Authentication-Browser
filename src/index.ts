@@ -11,6 +11,7 @@ export * from "./client/client";
 export * from "./client/client-actions";
 export * from "./model/configuration";
 export * from "./model/popup-window-model";
+export * from "./model/redirect-model";
 export * from "./proxy/v1/post-inquiry";
 export * from "./proxy/v1/post-redeem";
 export * from "./proxy/v1/post-refresh";
