@@ -70,6 +70,18 @@ export class BarkQueryRegisterer extends BarkCrossSiteRegisterer {
                 });
 
                 await this._configuration.clearTempObject();
+
+                urlParams.delete(queryKey);
+
+                const newUrl: string = [
+                    window.location.origin,
+                    window.location.pathname,
+                    window.location.hash,
+                    '?',
+                    urlParams.toString(),
+                ].join('');
+
+                window.history.replaceState({}, '', newUrl);
             }
         });
     }
