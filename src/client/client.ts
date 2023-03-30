@@ -7,8 +7,8 @@
 import { BarkAuthenticationToken } from "@barksh/token-browser";
 import { BarkModelConfiguration } from "../model/configuration";
 import { BarkPopupWindowModel } from "../model/popup-window-model";
-import { BarkQueryRegisterer } from "../model/query-registerer";
-import { BarkStartUpRegisterer } from "../model/start-up-registerer";
+import { BarkQueryRegisterer } from "../registerer/query-registerer";
+import { BarkStartUpRegisterer } from "../registerer/start-up-registerer";
 import { BarkStorageObject, IBarkStorageAgent } from "../storage/declare";
 import { verifyFilledBarkStorageObject } from "../util/verify";
 import { BarkAuthenticationClientAction, BarkAuthenticationClientActionManager } from "./client-actions";
