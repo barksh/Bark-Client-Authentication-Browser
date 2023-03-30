@@ -1,6 +1,6 @@
 /**
  * @author WMXPY
- * @namespace Model
+ * @namespace Registerer
  * @description Cross Site Registerer
  */
 
@@ -12,7 +12,7 @@ import { ERROR_CODE } from "../error/code";
 import { panic } from "../error/panic";
 import { BarkTempObject } from "../storage/declare";
 import { verifyFilledBarkTempObject } from "../util/verify";
-import { BarkModelConfiguration } from "./configuration";
+import { BarkModelConfiguration } from "../model/configuration";
 
 export type BarkCrossSiteRegistererAction = () => void
     | Promise<void>;

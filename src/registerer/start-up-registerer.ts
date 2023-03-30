@@ -1,15 +1,15 @@
 /**
  * @author WMXPY
- * @namespace Model
+ * @namespace Registerer
  * @description Start Up Registerer
  */
 
 import { BarkAuthenticationToken, BarkRefreshToken } from "@barksh/token-browser";
 import { requestBarkRefreshV1, RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { BarkAuthenticationClientActionManager } from "../client/client-actions";
+import { BarkModelConfiguration } from "../model/configuration";
 import { BarkStorageObject } from "../storage/declare";
 import { verifyFilledBarkStorageObject } from "../util/verify";
-import { BarkModelConfiguration } from "./configuration";
 import { BarkCrossSiteRegisterer } from "./cross-site-registerer";
 
 export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {

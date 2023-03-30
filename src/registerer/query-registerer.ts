@@ -1,6 +1,6 @@
 /**
  * @author WMXPY
- * @namespace Model
+ * @namespace Registerer
  * @description Query Registerer
  */
 
@@ -9,9 +9,9 @@ import { RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { BarkAuthenticationClientActionManager } from "../client/client-actions";
 import { ERROR_CODE } from "../error/code";
 import { panic } from "../error/panic";
+import { BarkModelConfiguration } from "../model/configuration";
 import { BarkTempObject } from "../storage/declare";
 import { verifyFilledBarkTempObject } from "../util/verify";
-import { BarkModelConfiguration } from "./configuration";
 import { BarkCrossSiteRegisterer } from "./cross-site-registerer";
 
 export class BarkQueryRegisterer extends BarkCrossSiteRegisterer {
