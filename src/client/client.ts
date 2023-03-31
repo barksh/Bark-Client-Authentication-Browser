@@ -4,7 +4,7 @@
  * @description Client
  */
 
-import { BarkAuthenticationToken } from "@barksh/token-browser";
+import { BarkAuthenticationToken, BarkRefreshToken } from "@barksh/token-browser";
 import { BarkModelConfiguration } from "../model/configuration";
 import { BarkPopupWindowModel } from "../model/popup-window-model";
 import { BarkRedirectModel } from "../model/redirect-model";
@@ -42,9 +42,23 @@ export class BarkAuthenticationClient {
         const rawAuthenticationToken: string = storageObject.authenticationToken;
 
         const authenticationToken: BarkAuthenticationToken = BarkAuthenticationToken.fromTokenOrThrow(rawAuthenticationToken);
-
         return authenticationToken;
     }
+
+    public async getRefreshToken(): Promise<BarkRefreshToken | null> {
+
+        const storageObject: BarkStorageObject = await this._configuration.loadStorageObject();
+        const verifyResult = verifyFilledBarkStorageObject(storageObject);
+
+        if (!verifyResult) {
+            return null;
+        }
+
+        const rawRefreshToken: string = storageObject.refreshToken;
+
+        const refreshToken: BarkRefreshToken = BarkRefreshToken.fromTokenOrThrow(rawRefreshToken);
+        return refreshToken;
+    };
 
     public async signOut(): Promise<void> {
 
