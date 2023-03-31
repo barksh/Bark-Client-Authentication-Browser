@@ -24,6 +24,10 @@ export abstract class BarkCrossSiteRegisterer {
 
     protected readonly _overrideModuleHostMap: Map<string, string>;
 
+    protected readonly _succeedActions: Set<BarkCrossSiteRegistererAction>;
+    protected readonly _neutralActions: Set<BarkCrossSiteRegistererAction>;
+    protected readonly _failedActions: Set<BarkCrossSiteRegistererAction>;
+
     protected readonly registerActions: BarkCrossSiteRegistererAction[];
 
     protected constructor(
@@ -35,6 +39,10 @@ export abstract class BarkCrossSiteRegisterer {
         this._actionManager = actionManager;
 
         this._overrideModuleHostMap = new Map<string, string>();
+
+        this._succeedActions = new Set<BarkCrossSiteRegistererAction>();
+        this._neutralActions = new Set<BarkCrossSiteRegistererAction>();
+        this._failedActions = new Set<BarkCrossSiteRegistererAction>();
 
         this.registerActions = [];
     }
@@ -52,6 +60,24 @@ export abstract class BarkCrossSiteRegisterer {
         return this;
     }
 
+    public addSucceedAction(action: BarkCrossSiteRegistererAction): this {
+
+        this._succeedActions.add(action);
+        return this;
+    }
+
+    public addNeutralAction(action: BarkCrossSiteRegistererAction): this {
+
+        this._neutralActions.add(action);
+        return this;
+    }
+
+    public addFailedAction(action: BarkCrossSiteRegistererAction): this {
+
+        this._failedActions.add(action);
+        return this;
+    }
+
     protected addAction(action: BarkCrossSiteRegistererAction): this {
 
         this.registerActions.push(action);
@@ -61,6 +87,27 @@ export abstract class BarkCrossSiteRegisterer {
     protected getOverrideModuleHost(targetDomain: string): string | undefined {
 
         return this._overrideModuleHostMap.get(targetDomain);
+    }
+
+    protected async executeSucceedActions(): Promise<void> {
+
+        for (const action of this._succeedActions) {
+            await Promise.resolve(action());
+        }
+    }
+
+    protected async executeNeutralActions(): Promise<void> {
+
+        for (const action of this._neutralActions) {
+            await Promise.resolve(action());
+        }
+    }
+
+    protected async executeFailedActions(): Promise<void> {
+
+        for (const action of this._failedActions) {
+            await Promise.resolve(action());
+        }
     }
 
     protected async redeemInquiry(tempObject: BarkTempObject): Promise<RequestBarkRedeemV1Response> {

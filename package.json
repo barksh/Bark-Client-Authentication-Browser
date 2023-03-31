@@ -1,6 +1,6 @@
 {
   "name": "@barksh/client-authentication-browser",
-  "version": "1.4.1",
+  "version": "1.5.3",
   "description": "Authentication Browser Client Library",
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "dependencies": {
     "@sudoo/jwt-web": "^3.1.0",
     "@sudoo/magic": "^1.9.0",
+    "@sudoo/url": "^1.5.1",
     "connor": "^2.8.0"
   },
   "devDependencies": {

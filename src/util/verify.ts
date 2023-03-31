@@ -4,7 +4,7 @@
  * @description Verify
  */
 
-import { BarkFilledStorageObject, BarkFilledTempObject } from "../storage/declare";
+import { BarkFilledPreferenceObject, BarkFilledStorageObject, BarkFilledTempObject } from "../storage/declare";
 
 export const verifyFilledBarkTempObject = (object: any): object is BarkFilledTempObject => {
 
@@ -29,6 +29,19 @@ export const verifyFilledBarkStorageObject = (object: any): object is BarkFilled
 
     if (typeof object.refreshToken !== 'string'
         || typeof object.authenticationToken !== 'string') {
+        return false;
+    }
+
+    return true;
+};
+
+export const verifyFilledBarkPreferenceObject = (object: any): object is BarkFilledPreferenceObject => {
+
+    if (typeof object !== 'object') {
+        return false;
+    }
+
+    if (!Array.isArray(object.recentSignInRecords)) {
         return false;
     }
 

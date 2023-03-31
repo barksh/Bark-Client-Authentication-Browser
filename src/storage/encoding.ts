@@ -4,7 +4,7 @@
  * @description Encoding
  */
 
-import { BarkStorageObject, BarkTempObject } from "./declare";
+import { BarkPreferenceObject, BarkStorageObject, BarkTempObject } from "./declare";
 
 export const encodeBarkStorageObject = (object: BarkStorageObject): string => {
 
@@ -25,6 +25,18 @@ export const encodeBarkTempObject = (object: BarkTempObject): string => {
 };
 
 export const decodeBarkTempObject = (encoded: string): BarkTempObject => {
+
+    const json: string = atob(encoded);
+    return JSON.parse(json);
+};
+
+export const encodeBarkPreferenceObject = (object: BarkPreferenceObject): string => {
+
+    const json: string = JSON.stringify(object);
+    return btoa(json);
+};
+
+export const decodeBarkPreferenceObject = (encoded: string): BarkPreferenceObject => {
 
     const json: string = atob(encoded);
     return JSON.parse(json);

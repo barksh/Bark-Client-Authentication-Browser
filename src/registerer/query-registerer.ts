@@ -4,6 +4,7 @@
  * @description Query Registerer
  */
 
+import { URLStructure } from "@sudoo/url";
 import { RequestBarkRedeemV1Response } from "../action/v1/redeem";
 import { RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { BarkAuthenticationClientActionManager } from "../client/client-actions";
@@ -35,8 +36,8 @@ export class BarkQueryRegisterer extends BarkCrossSiteRegisterer {
 
         this.addAction(async () => {
 
-            const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-            const queryValue: string | null = urlParams.get(queryKey);
+            const url: URLStructure = URLStructure.fromUrl(window.location.href);
+            const queryValue: string | null = url.getParamOrNull(queryKey);
 
             if (typeof queryValue === 'string') {
 
@@ -52,6 +53,10 @@ export class BarkQueryRegisterer extends BarkCrossSiteRegisterer {
                 }
 
                 if (tempObject.exposureKey !== queryValue) {
+
+                    this._removeParamQueryKey(url, queryKey);
+
+                    this.executeNeutralActions();
                     return;
                 }
 
@@ -71,18 +76,21 @@ export class BarkQueryRegisterer extends BarkCrossSiteRegisterer {
 
                 await this._configuration.clearTempObject();
 
-                urlParams.delete(queryKey);
+                this._removeParamQueryKey(url, queryKey);
 
-                const newUrl: string = [
-                    window.location.origin,
-                    window.location.pathname,
-                    window.location.hash,
-                    '?',
-                    urlParams.toString(),
-                ].join('');
-
-                window.history.replaceState({}, '', newUrl);
+                await this.executeSucceedActions();
+                return;
             }
+
+            this.executeNeutralActions();
         });
+    }
+
+    private _removeParamQueryKey(url: URLStructure, queryKey: string): void {
+
+        const urlRemoved: URLStructure = url.deleteParams(queryKey);
+        window.history.replaceState({}, '', urlRemoved.build());
+
+        return;
     }
 }

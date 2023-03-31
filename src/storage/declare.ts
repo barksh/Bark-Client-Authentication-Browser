@@ -13,6 +13,10 @@ export interface IBarkStorageAgent {
     persistTemp(objectString: string): Promise<void> | void;
     loadTemp(): Promise<string> | string;
     clearTemp(): Promise<void> | void;
+
+    persistPreference(objectString: string): Promise<void> | void;
+    loadPreference(): Promise<string> | string;
+    clearPreference(): Promise<void> | void;
 }
 
 export type BarkTempObject = {
@@ -39,4 +43,21 @@ export type BarkFilledStorageObject = {
 
     readonly refreshToken: string;
     readonly authenticationToken: string;
-} & BarkTempObject;
+} & BarkStorageObject;
+
+export type RecentSignInRecord = {
+
+    readonly domain: string;
+    readonly identifier: string;
+    readonly time: number;
+};
+
+export type BarkPreferenceObject = {
+
+    readonly recentSignInRecords?: RecentSignInRecord[];
+};
+
+export type BarkFilledPreferenceObject = {
+
+    readonly recentSignInRecords: RecentSignInRecord[];
+} & BarkPreferenceObject;

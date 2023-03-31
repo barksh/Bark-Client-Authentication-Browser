@@ -72,6 +72,8 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
                 refreshToken: rawRefreshToken,
                 authenticationToken: refreshResponse.rawAuthenticationToken,
             });
+
+            await this.executeNeutralActions();
         });
     }
 }

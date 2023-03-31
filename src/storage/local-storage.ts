@@ -9,6 +9,7 @@ import { encodeBarkStorageObject, encodeBarkTempObject } from "./encoding";
 
 const localStorageKey: string = '_bark-client-browser-storage';
 const localTempKey: string = '_bark-client-browser-temp';
+const localPreferenceKey: string = '_bark-client-browser-preference';
 
 export class BarkLocalStorageAgent implements IBarkStorageAgent {
 
@@ -67,5 +68,26 @@ export class BarkLocalStorageAgent implements IBarkStorageAgent {
     public async clearTemp(): Promise<void> {
 
         localStorage.removeItem(localTempKey);
+    }
+
+    public async persistPreference(objectString: string): Promise<void> {
+
+        localStorage.setItem(localPreferenceKey, objectString);
+    }
+
+    public async loadPreference(): Promise<string> {
+
+        const object: string | null = localStorage.getItem(localPreferenceKey);
+
+        if (!object) {
+            return JSON.stringify({});
+        }
+
+        return object;
+    }
+
+    public async clearPreference(): Promise<void> {
+
+        localStorage.removeItem(localPreferenceKey);
     }
 }
