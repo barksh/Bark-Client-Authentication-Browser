@@ -58,7 +58,7 @@ export class BarkAuthenticationClient {
 
         const refreshToken: BarkRefreshToken = BarkRefreshToken.fromTokenOrThrow(rawRefreshToken);
         return refreshToken;
-    };
+    }
 
     public async signOut(): Promise<void> {
 

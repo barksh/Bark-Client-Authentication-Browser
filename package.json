@@ -1,6 +1,6 @@
 {
   "name": "@barksh/client-authentication-browser",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "Authentication Browser Client Library",
   "repository": {
     "type": "git",
