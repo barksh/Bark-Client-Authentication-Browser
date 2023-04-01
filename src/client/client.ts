@@ -13,6 +13,7 @@ import { BarkRedirectModel } from "../model/redirect-model";
 import { BarkQueryRegisterer } from "../registerer/query-registerer";
 import { BarkStartUpRegisterer } from "../registerer/start-up-registerer";
 import { BarkStorageObject, IBarkStorageAgent } from "../storage/declare";
+import { fixDomain } from "../util/fix-domain";
 import { validateDomain } from "../util/validate-domain";
 import { verifyFilledBarkStorageObject } from "../util/verify";
 import { BarkAuthenticationClientAction, BarkAuthenticationClientActionManager } from "./client-actions";
@@ -86,7 +87,8 @@ export class BarkAuthenticationClient {
 
     public createPopupWindowModel(targetDomain: string): BarkPopupWindowModel {
 
-        const validateResult: boolean = validateDomain(targetDomain);
+        const fixedDomain: string = fixDomain(targetDomain);
+        const validateResult: boolean = validateDomain(fixedDomain);
 
         if (!validateResult) {
             throw panic.code(ERROR_CODE.INVALID_HOST_NAME_1, targetDomain);
@@ -100,7 +102,8 @@ export class BarkAuthenticationClient {
 
     public createRedirectModel(queryKey: string, targetDomain: string): BarkRedirectModel {
 
-        const validateResult: boolean = validateDomain(targetDomain);
+        const fixedDomain: string = fixDomain(targetDomain);
+        const validateResult: boolean = validateDomain(fixedDomain);
 
         if (!validateResult) {
             throw panic.code(ERROR_CODE.INVALID_HOST_NAME_1, targetDomain);
