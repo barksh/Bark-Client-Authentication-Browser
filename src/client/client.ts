@@ -5,12 +5,15 @@
  */
 
 import { BarkAuthenticationToken, BarkRefreshToken } from "@barksh/token-browser";
+import { ERROR_CODE } from "../error/code";
+import { panic } from "../error/panic";
 import { BarkModelConfiguration } from "../model/configuration";
 import { BarkPopupWindowModel } from "../model/popup-window-model";
 import { BarkRedirectModel } from "../model/redirect-model";
 import { BarkQueryRegisterer } from "../registerer/query-registerer";
 import { BarkStartUpRegisterer } from "../registerer/start-up-registerer";
 import { BarkStorageObject, IBarkStorageAgent } from "../storage/declare";
+import { validateDomain } from "../util/validate-domain";
 import { verifyFilledBarkStorageObject } from "../util/verify";
 import { BarkAuthenticationClientAction, BarkAuthenticationClientActionManager } from "./client-actions";
 
@@ -83,6 +86,12 @@ export class BarkAuthenticationClient {
 
     public createPopupWindowModel(targetDomain: string): BarkPopupWindowModel {
 
+        const validateResult: boolean = validateDomain(targetDomain);
+
+        if (!validateResult) {
+            throw panic.code(ERROR_CODE.INVALID_HOST_NAME_1, targetDomain);
+        }
+
         return BarkPopupWindowModel.fromConfiguration(
             targetDomain,
             this._configuration,
@@ -90,6 +99,12 @@ export class BarkAuthenticationClient {
     }
 
     public createRedirectModel(queryKey: string, targetDomain: string): BarkRedirectModel {
+
+        const validateResult: boolean = validateDomain(targetDomain);
+
+        if (!validateResult) {
+            throw panic.code(ERROR_CODE.INVALID_HOST_NAME_1, targetDomain);
+        }
 
         return BarkRedirectModel.fromConfiguration(
             queryKey,
