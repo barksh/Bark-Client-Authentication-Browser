@@ -17,7 +17,8 @@ const openFallbackWindow = (url: string): Window | null => {
 
 export const openPopUpWindow = (url: string, width: number, height: number): Window | null => {
 
-    const newWindow: Window | null = window.open(url, '_blank', `width=${width},height=${height}`);
+    const newWindow: Window | null =
+        window.open(url, '_blank', `width=${width},height=${height}`);
 
     if (typeof newWindow === 'undefined'
         || newWindow === null) {
@@ -25,7 +26,7 @@ export const openPopUpWindow = (url: string, width: number, height: number): Win
     }
 
     if (newWindow.closed
-        || typeof newWindow.closed == 'undefined') {
+        || typeof newWindow.closed === 'undefined') {
         return openFallbackWindow(url);
     }
 

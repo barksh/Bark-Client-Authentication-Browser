@@ -16,6 +16,11 @@ import { sleepWithTimeOut } from "../util/sleep";
 import { BarkModelConfiguration } from "./configuration";
 import { BarkCrossSiteModel } from "./cross-site-model";
 
+const WINDOW_WIDTH: number = 600;
+const WINDOW_HEIGHT: number = 1200;
+
+const AWAIT_DURATION: number = 256;
+
 export class BarkPopupWindowModel extends BarkCrossSiteModel {
 
     public static fromConfiguration(targetDomain: string, configuration: BarkModelConfiguration): BarkPopupWindowModel {
@@ -51,8 +56,8 @@ export class BarkPopupWindowModel extends BarkCrossSiteModel {
 
         const newWindow: Window | null = openPopUpWindow(
             inquiryResponse.redirectUrl,
-            600,
-            1200,
+            WINDOW_WIDTH,
+            WINDOW_HEIGHT,
         );
 
         if (!newWindow) {
@@ -60,7 +65,7 @@ export class BarkPopupWindowModel extends BarkCrossSiteModel {
         }
 
         while (!newWindow.closed) {
-            await sleepWithTimeOut(256);
+            await sleepWithTimeOut(AWAIT_DURATION);
         }
 
         if (!this._exposureKey) {
