@@ -60,7 +60,7 @@ export class BarkPopupWindowModel extends BarkCrossSiteModel {
         }
 
         while (!newWindow.closed) {
-            await sleepWithTimeOut(1000);
+            await sleepWithTimeOut(256);
         }
 
         if (!this._exposureKey) {
