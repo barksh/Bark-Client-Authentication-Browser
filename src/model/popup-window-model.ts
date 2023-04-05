@@ -11,6 +11,7 @@ import { RequestBarkRedeemV1Response } from "../action/v1/redeem";
 import { RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { ERROR_CODE } from "../error/code";
 import { panic } from "../error/panic";
+import { openPopUpWindow } from "../util/pop-up";
 import { sleepWithTimeOut } from "../util/sleep";
 import { BarkModelConfiguration } from "./configuration";
 import { BarkCrossSiteModel } from "./cross-site-model";
@@ -48,7 +49,11 @@ export class BarkPopupWindowModel extends BarkCrossSiteModel {
         this._exposureKey = inquiryResponse.exposureKey;
         this._hiddenKey = inquiryResponse.hiddenKey;
 
-        const newWindow: Window | null = window.open(inquiryResponse.redirectUrl, '_blank', 'width=600,height=1200');
+        const newWindow: Window | null = openPopUpWindow(
+            inquiryResponse.redirectUrl,
+            600,
+            1200,
+        );
 
         if (!newWindow) {
             throw panic.code(ERROR_CODE.FAILED_TO_OPEN_NEW_WINDOW);
