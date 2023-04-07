@@ -4,8 +4,8 @@
  * @description Configuration
  */
 
-import { BarkStorageObject, BarkTempObject, IBarkStorageAgent } from "../storage/declare";
-import { decodeBarkStorageObject, decodeBarkTempObject, encodeBarkStorageObject, encodeBarkTempObject } from "../storage/encoding";
+import { BarkPreferenceObject, BarkStorageObject, BarkTempObject, IBarkStorageAgent } from "../storage/declare";
+import { decodeBarkPreferenceObject, decodeBarkStorageObject, decodeBarkTempObject, encodeBarkPreferenceObject, encodeBarkStorageObject, encodeBarkTempObject } from "../storage/encoding";
 import { BarkLocalStorageAgent } from "../storage/local-storage";
 
 const defaultStorageAgent: IBarkStorageAgent =
@@ -83,5 +83,29 @@ export class BarkModelConfiguration {
     public async clearTempObject(): Promise<void> {
 
         await this._storageAgent.clearTemp();
+    }
+
+    public async persistPreferenceObject(object: BarkPreferenceObject): Promise<void> {
+
+        const encodedObject: string = encodeBarkPreferenceObject(object);
+        await this._storageAgent.persistPreference(encodedObject);
+    }
+
+    public async loadPreferenceObject(): Promise<BarkPreferenceObject> {
+
+        const encodedObject: string = await this._storageAgent.loadPreference();
+        return decodeBarkPreferenceObject(encodedObject);
+    }
+
+    public async mutatePreferenceObject(mutator: (object: BarkPreferenceObject) => BarkPreferenceObject): Promise<void> {
+
+        const object: BarkPreferenceObject = await this.loadPreferenceObject();
+        const mutatedObject: BarkPreferenceObject = mutator(object);
+        await this.persistPreferenceObject(mutatedObject);
+    }
+
+    public async clearPreferenceObject(): Promise<void> {
+
+        await this._storageAgent.clearPreference();
     }
 }
