@@ -17,14 +17,20 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
     public static create(
         configuration: BarkModelConfiguration,
         actionManager: BarkAuthenticationClientActionManager,
+        currentDate: Date,
     ): BarkStartUpRegisterer {
 
-        return new BarkStartUpRegisterer(configuration, actionManager);
+        return new BarkStartUpRegisterer(
+            configuration,
+            actionManager,
+            currentDate,
+        );
     }
 
     private constructor(
         configuration: BarkModelConfiguration,
         actionManager: BarkAuthenticationClientActionManager,
+        currentDate: Date,
     ) {
 
         super(configuration, actionManager);
@@ -42,7 +48,7 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
             const rawAuthenticationToken: string = storageObject.authenticationToken;
             const authenticationToken: BarkAuthenticationToken = BarkAuthenticationToken.fromTokenOrThrow(rawAuthenticationToken);
 
-            const tomorrowDate = new Date();
+            const tomorrowDate = new Date(currentDate.getTime());
             tomorrowDate.setDate(tomorrowDate.getDate() + 1);
             const validAuthenticationTokenForADay: boolean =
                 authenticationToken.verifyExpiration(tomorrowDate);
@@ -54,7 +60,7 @@ export class BarkStartUpRegisterer extends BarkCrossSiteRegisterer {
             const rawRefreshToken: string = storageObject.refreshToken;
             const refreshToken: BarkRefreshToken = BarkRefreshToken.fromTokenOrThrow(rawRefreshToken);
 
-            const validRefreshToken: boolean = refreshToken.verifyExpiration();
+            const validRefreshToken: boolean = refreshToken.verifyTime(currentDate);
 
             if (!validRefreshToken) {
                 await this._actionManager.executeSignOutActions();

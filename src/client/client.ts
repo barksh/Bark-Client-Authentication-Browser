@@ -45,7 +45,8 @@ export class BarkAuthenticationClient {
 
         const rawAuthenticationToken: string = storageObject.authenticationToken;
 
-        const authenticationToken: BarkAuthenticationToken = BarkAuthenticationToken.fromTokenOrThrow(rawAuthenticationToken);
+        const authenticationToken: BarkAuthenticationToken =
+            BarkAuthenticationToken.fromTokenOrThrow(rawAuthenticationToken);
         return authenticationToken;
     }
 
@@ -100,7 +101,10 @@ export class BarkAuthenticationClient {
         );
     }
 
-    public createRedirectModel(queryKey: string, targetDomain: string): BarkRedirectModel {
+    public createRedirectModel(
+        queryKey: string,
+        targetDomain: string,
+    ): BarkRedirectModel {
 
         const fixedDomain: string = fixDomain(targetDomain);
         const validateResult: boolean = validateDomain(fixedDomain);
@@ -125,11 +129,14 @@ export class BarkAuthenticationClient {
         );
     }
 
-    public createStartUpRegisterer(): BarkStartUpRegisterer {
+    public createStartUpRegisterer(
+        currentDate: Date = new Date(),
+    ): BarkStartUpRegisterer {
 
         return BarkStartUpRegisterer.create(
             this._configuration,
             this._actionManager,
+            currentDate,
         );
     }
 }
