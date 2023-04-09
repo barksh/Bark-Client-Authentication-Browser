@@ -17,6 +17,7 @@
     "@barksh/token-browser": "*"
   },
   "dependencies": {
+    "@barksh/dns-resolver": "^1.0.0",
     "@sudoo/jwt-web": "^3.1.0",
     "@sudoo/magic": "^1.9.0",
     "@sudoo/url": "^1.5.1",
