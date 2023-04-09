@@ -18,14 +18,13 @@
   },
   "dependencies": {
     "@barksh/dns-resolver": "^1.0.0",
-    "@sudoo/jwt-web": "^3.1.0",
     "@sudoo/magic": "^1.9.0",
-    "@sudoo/url": "^1.5.1",
+    "@sudoo/url": "^1.6.0",
     "connor": "^2.8.0"
   },
   "devDependencies": {
     "@barksh/authentication-types": "^1.0.0",
-    "@barksh/token-browser": "^1.3.2",
+    "@barksh/token-browser": "^1.4.0",
     "@sudoo/triforce": "^3.11.0",
     "global-jsdom": "*",
     "jsdom": "*"
