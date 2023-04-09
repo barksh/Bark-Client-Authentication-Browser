@@ -5,7 +5,7 @@
  */
 
 import { IBarkStorageAgent } from "./declare";
-import { encodeBarkStorageObject, encodeBarkTempObject } from "./encoding";
+import { encodeBarkPreferenceObject, encodeBarkStorageObject, encodeBarkTempObject } from "./encoding";
 
 const localStorageKey: string = '_bark-client-browser-storage';
 const localTempKey: string = '_bark-client-browser-temp';
@@ -80,7 +80,9 @@ export class BarkLocalStorageAgent implements IBarkStorageAgent {
         const object: string | null = localStorage.getItem(localPreferenceKey);
 
         if (!object) {
-            return JSON.stringify({});
+            return encodeBarkPreferenceObject({
+                recentSignInRecords: [],
+            });
         }
 
         return object;
