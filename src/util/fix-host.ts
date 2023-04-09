@@ -4,8 +4,7 @@
  * @description Host
  */
 
-import { getAuthenticationModuleV1WithDNSProxy } from "../proxy/dns/authentication-module";
-import { getAuthenticationUIV1WithDNSProxy } from "../proxy/dns/authentication-ui";
+import { dnsResolver } from "./dns";
 
 export const fixTargetAuthenticationModuleHost = async (target: string, override?: string): Promise<string> => {
 
@@ -14,7 +13,7 @@ export const fixTargetAuthenticationModuleHost = async (target: string, override
     }
 
     const targetAuthenticationModuleHost: string =
-        await getAuthenticationModuleV1WithDNSProxy(target);
+        await dnsResolver.V1.resolveAuthenticationModule(target);
 
     return `https://${targetAuthenticationModuleHost}`;
 };
@@ -26,7 +25,7 @@ export const fixTargetAuthenticationUIHost = async (target: string, override?: s
     }
 
     const targetAuthenticationUIHost: string =
-        await getAuthenticationUIV1WithDNSProxy(target);
+        await dnsResolver.V1.resolveAuthenticationUI(target);
 
     return `https://${targetAuthenticationUIHost}`;
 };
