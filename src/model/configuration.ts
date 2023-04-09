@@ -49,7 +49,9 @@ export class BarkModelConfiguration {
         return decodeBarkStorageObject(encodedObject);
     }
 
-    public async mutateStorageObject(mutator: (object: BarkStorageObject) => BarkStorageObject): Promise<void> {
+    public async mutateStorageObject(
+        mutator: (object: BarkStorageObject) => BarkStorageObject,
+    ): Promise<void> {
 
         const object: BarkStorageObject = await this.loadStorageObject();
         const mutatedObject: BarkStorageObject = mutator(object);
@@ -73,7 +75,9 @@ export class BarkModelConfiguration {
         return decodeBarkTempObject(encodedObject);
     }
 
-    public async mutateTempObject(mutator: (object: BarkTempObject) => BarkTempObject): Promise<void> {
+    public async mutateTempObject(
+        mutator: (object: BarkTempObject) => BarkTempObject,
+    ): Promise<void> {
 
         const object: BarkTempObject = await this.loadTempObject();
         const mutatedObject: BarkTempObject = mutator(object);
@@ -97,7 +101,9 @@ export class BarkModelConfiguration {
         return decodeBarkPreferenceObject(encodedObject);
     }
 
-    public async mutatePreferenceObject(mutator: (object: BarkPreferenceObject) => BarkPreferenceObject): Promise<void> {
+    public async mutatePreferenceObject(
+        mutator: (object: BarkPreferenceObject) => BarkPreferenceObject,
+    ): Promise<void> {
 
         const object: BarkPreferenceObject = await this.loadPreferenceObject();
         const mutatedObject: BarkPreferenceObject = mutator(object);

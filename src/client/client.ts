@@ -139,4 +139,10 @@ export class BarkAuthenticationClient {
             currentDate,
         );
     }
+
+    public async clearPreference(): Promise<void> {
+
+        await this._configuration.clearPreferenceObject();
+        return;
+    }
 }

@@ -10,6 +10,7 @@ import { requestBarkRedeemV1, RequestBarkRedeemV1Response } from "../action/v1/r
 import { requestBarkRefreshV1, RequestBarkRefreshV1Response } from "../action/v1/refresh";
 import { ERROR_CODE } from "../error/code";
 import { panic } from "../error/panic";
+import { BarkPreferenceObject, RecentSignInRecord } from "../storage/declare";
 import { BarkModelConfiguration } from "./configuration";
 
 export abstract class BarkCrossSiteModel {
@@ -58,8 +59,9 @@ export abstract class BarkCrossSiteModel {
         this._performed = true;
     }
 
-    protected async requestInquiry(): Promise<RequestBarkInquiryV1Response> {
+    protected async requestInquiry(currentTime: Date = new Date()): Promise<RequestBarkInquiryV1Response> {
 
+        await this._recordSignInRecord(currentTime);
         const inquiryResponse: RequestBarkInquiryV1Response = await requestBarkInquiryV1(
             this._targetDomain,
             {
@@ -67,7 +69,7 @@ export abstract class BarkCrossSiteModel {
                 actions: this._actions,
                 overrideTargetHost: this._overrideTargetModuleHost,
                 overrideTargetUIHost: this._overrideTargetUIHost,
-            }
+            },
         );
 
         return inquiryResponse;
@@ -97,5 +99,39 @@ export abstract class BarkCrossSiteModel {
         );
 
         return refreshResult;
+    }
+
+    private async _recordSignInRecord(currentTime: Date = new Date()): Promise<void> {
+
+        await this._configuration.mutatePreferenceObject(
+            (preference: BarkPreferenceObject): BarkPreferenceObject => {
+                if (!Array.isArray(preference.recentSignInRecords)) {
+
+                    return {
+                        ...preference,
+                        recentSignInRecords: [{
+                            domain: this._targetDomain,
+                            time: currentTime.getTime(),
+                        }],
+                    };
+                }
+
+                return {
+                    ...preference,
+                    recentSignInRecords: preference.recentSignInRecords.map(
+                        (record: RecentSignInRecord) => {
+                            if (record.domain === this._targetDomain) {
+                                return {
+                                    ...record,
+                                    time: currentTime.getTime(),
+                                };
+                            }
+                            return record;
+                        },
+                    ),
+                };
+            },
+        );
+        return;
     }
 }

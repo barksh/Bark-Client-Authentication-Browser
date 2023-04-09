@@ -48,7 +48,6 @@ export type BarkFilledStorageObject = {
 export type RecentSignInRecord = {
 
     readonly domain: string;
-    readonly identifier: string;
     readonly time: number;
 };
 
