@@ -12,10 +12,10 @@ import { BarkPopupWindowModel } from "../model/popup-window-model";
 import { BarkRedirectModel } from "../model/redirect-model";
 import { BarkQueryRegisterer } from "../registerer/query-registerer";
 import { BarkStartUpRegisterer } from "../registerer/start-up-registerer";
-import { BarkStorageObject, IBarkStorageAgent } from "../storage/declare";
+import { BarkPreferenceObject, BarkStorageObject, IBarkStorageAgent, RecentSignInRecord } from "../storage/declare";
 import { fixDomain } from "../util/fix-domain";
 import { validateDomain } from "../util/validate-domain";
-import { verifyFilledBarkStorageObject } from "../util/verify";
+import { verifyFilledBarkPreferenceObject, verifyFilledBarkStorageObject } from "../util/verify";
 import { BarkAuthenticationClientAction, BarkAuthenticationClientActionManager } from "./client-actions";
 
 export class BarkAuthenticationClient {
@@ -138,6 +138,19 @@ export class BarkAuthenticationClient {
             this._actionManager,
             currentDate,
         );
+    }
+
+    public async getRecentSignInRecords(): Promise<RecentSignInRecord[]> {
+
+        const preferenceObject: BarkPreferenceObject = await this._configuration.loadPreferenceObject();
+        const verifyResult = verifyFilledBarkPreferenceObject(preferenceObject);
+
+        if (!verifyResult) {
+            return [];
+        }
+
+        const records: RecentSignInRecord[] = preferenceObject.recentSignInRecords;
+        return records;
     }
 
     public async clearPreference(): Promise<void> {
