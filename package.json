@@ -19,7 +19,7 @@
   "dependencies": {
     "@barksh/dns-resolver": "^1.0.0",
     "@sudoo/magic": "^1.9.0",
-    "@sudoo/url": "^1.6.0",
+    "@sudoo/url": "^1.6.1",
     "connor": "^2.8.0"
   },
   "devDependencies": {
