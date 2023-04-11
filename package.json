@@ -1,6 +1,6 @@
 {
   "name": "@barksh/client-authentication-browser",
-  "version": "1.8.1",
+  "version": "1.8.3",
   "description": "Authentication Browser Client Library",
   "repository": {
     "type": "git",
@@ -17,9 +17,9 @@
     "@barksh/token-browser": "*"
   },
   "dependencies": {
-    "@barksh/dns-resolver": "^1.0.0",
+    "@barksh/dns-resolver": "^1.0.1",
     "@sudoo/magic": "^1.9.0",
-    "@sudoo/url": "^1.6.0",
+    "@sudoo/url": "^1.6.1",
     "connor": "^2.8.0"
   },
   "devDependencies": {
