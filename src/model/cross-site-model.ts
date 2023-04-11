@@ -116,19 +116,36 @@ export abstract class BarkCrossSiteModel {
                     };
                 }
 
+                if (preference.recentSignInRecords.some(
+                    (record: RecentSignInRecord) => {
+                        return record.domain === this._targetDomain;
+                    },
+                )) {
+                    return {
+                        ...preference,
+                        recentSignInRecords: preference.recentSignInRecords.map(
+                            (record: RecentSignInRecord) => {
+                                if (record.domain === this._targetDomain) {
+                                    return {
+                                        ...record,
+                                        time: currentTime.getTime(),
+                                    };
+                                }
+                                return record;
+                            },
+                        ),
+                    };
+                }
+
                 return {
                     ...preference,
-                    recentSignInRecords: preference.recentSignInRecords.map(
-                        (record: RecentSignInRecord) => {
-                            if (record.domain === this._targetDomain) {
-                                return {
-                                    ...record,
-                                    time: currentTime.getTime(),
-                                };
-                            }
-                            return record;
+                    recentSignInRecords: [
+                        ...preference.recentSignInRecords,
+                        {
+                            domain: this._targetDomain,
+                            time: currentTime.getTime(),
                         },
-                    ),
+                    ],
                 };
             },
         );
