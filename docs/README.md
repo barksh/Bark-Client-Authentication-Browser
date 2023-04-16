@@ -11,6 +11,8 @@ Authentication Browser Client Library
 
 ```sh
 yarn add @barksh/client-authentication-browser
+yarn add @barksh/authentication-types @barksh/token-browser # Peer Dependencies
 # Or
 npm install @barksh/client-authentication-browser --save
+npm install @barksh/authentication-types @barksh/token-browser --save # Peer Dependencies
 ```
