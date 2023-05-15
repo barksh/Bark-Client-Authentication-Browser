@@ -20,7 +20,7 @@
     "@barksh/dns-resolver": "^1.0.1",
     "@sudoo/magic": "^1.9.0",
     "@sudoo/url": "^1.6.1",
-    "connor": "^2.8.0"
+    "connor": "^2.9.0"
   },
   "devDependencies": {
     "@barksh/authentication-types": "^1.0.0",
